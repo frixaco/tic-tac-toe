@@ -1,0 +1,20 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  width: fit-content;
+}
+
+.box {
+  width: 60px;
+  height: 60px;
+  border: 2px solid gray;
+  display: grid;
+  place-items: center;
+}
