@@ -1,0 +1,2 @@
+body{display:grid;height:100vh;place-items:center;width:100vw}.container{display:grid;grid-template-columns:repeat(3,1fr);width:-webkit-fit-content;width:-moz-fit-content;width:fit-content}.box{border:2px solid gray;display:grid;height:60px;place-items:center;width:60px}
+/*# sourceMappingURL=main.4fa330be.css.map*/
