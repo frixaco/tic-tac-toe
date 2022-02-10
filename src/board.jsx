@@ -12,10 +12,27 @@ const solutions = [
   [2, 5, 8],
 ];
 
-const emptyBoard = ["", "", "", "", "", "", "", "", ""];
+const useStateWithLocalStorage = (key, defaultValue) => {
+  const [state, setState] = useState(
+    () => JSON.parse(window.localStorage.getItem(key)) || defaultValue
+  );
+
+  const cleanLocalStorage = () => {
+    window.localStorage.removeItem(key)
+  }
+
+  useEffect(() => {
+    window.localStorage.setItem(key, JSON.stringify(state))
+  }, state)
+
+  return [state, setState, cleanLocalStorage]
+};
+
+const emptyBoard = Array(9).fill(null);
 
 function Board() {
-  const [board, setBoard] = useState(emptyBoard);
+  const [board, setBoard, cleanLocalStorage] = useStateWithLocalStorage('tictactoe', emptyBoard)
+
   const [turnX, setTurnX] = useState(true);
   const [gameEnd, setGameEnd] = useState(false);
   const [winner, setWinner] = useState(null);
@@ -47,11 +64,7 @@ function Board() {
 
   const getMark = () => (turnX ? "X" : "O");
   const handleCheck = (e) => {
-    if (gameEnd) {
-      return;
-    }
-
-    if (board[+e.target.id] !== "") {
+    if (gameEnd || board[+e.target.id]) {
       return;
     }
 
@@ -69,17 +82,26 @@ function Board() {
     setTurnX(true);
   };
 
-  return (
-    <div className="App">
-      <div className="container">
+  const renderBoard = () => {
+    return (
+      <>
         {board.map((cell, index) => (
           <div key={index} id={index} className="box" onClick={handleCheck}>
             {cell}
           </div>
         ))}
-      </div>
+      </>
+    );
+  };
+
+  return (
+    <div className="App">
+      <div className="container">{renderBoard()}</div>
       {gameEnd && <h4>Game ended. Winner is {winner}</h4>}
       <button onClick={reset}>Restart</button>
+      <button onClick={cleanLocalStorage}>
+        Clear local storage
+      </button>
     </div>
   );
 }
